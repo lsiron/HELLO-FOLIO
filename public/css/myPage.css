@@ -1,0 +1,375 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+body.grey-bg {
+  background-color: #fffdfde7; /* 회색 배경색 */
+  color: #333; /* 텍스트 색상 */
+  font-family: 'Noto Sans KR', sans-serif; /* Noto Sans KR 폰트 적용 */
+  font-weight: 700; /* 기본 글씨체를 더 진하게 설정 */
+  background-image: url('https://images.unsplash.com/photo-1520188740392-665a13f453fc?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); /* 배경 이미지 추가 */
+  background-size: cover; /* 이미지를 화면에 꽉 채우도록 설정 */
+  background-position: center center; /* 이미지 위치를 가운데 정렬 */
+  background-repeat: no-repeat; /* 배경 이미지 반복 없음 */
+}
+
+.all-content {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1;
+}
+/* 유저프로필 소개박스 */
+.left-column {
+  /* flex: 3; */
+  padding: 230px; 
+  /* background-color: #f4f4f4; */
+}
+/* 유저 정보박스 */
+.right-column {
+  flex: 7;
+  padding: 2% 5% 0% 2%;
+  margin-top: 56px;
+  /* background-color: #ffffff; */
+}
+
+.right-column h1 {
+  color: white;
+}
+
+
+/* 유저 이미지 카드 */
+.user-img {
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  overflow: hidden;
+  width: 250px;
+  height: 250px;
+  margin-bottom: 16px;
+}
+.user-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 유저 카드 */
+.user-info {
+  width: 400px;
+  height: 500px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 500px;
+  margin-top: -120px;
+  text-align: center; /* 텍스트 중앙 정렬 */
+}
+
+/* 자기소개 텍스트와 버튼 중앙 정렬 */
+.user-introduction {
+  text-align: center;
+}
+
+#intro-display button {
+  margin-top: 15px; /* 버튼과 텍스트 사이 간격 */
+}
+
+/* 이름과 이메일 중앙 정렬 */
+.user-name-email {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 수평으로 가운데 정렬 */
+  margin: 5px 0 15px; 
+  font-size: 22px;
+}
+
+.user-name-email div {
+  margin-bottom: 10px; /* 이름과 이메일 사이 간격 */
+}
+
+#edit-intro-btn {
+  margin: 5px; /* 버튼 간의 간격 추가 */
+  background-color: #242121;
+  border: none;
+  border-radius: 4px;
+  font-size: 20px;
+  color: #fff;
+  cursor: pointer;
+  padding: 0 20px;
+}
+
+#edit-intro-btn:hover {
+  background-color: #464646;
+}
+
+/* 자기소개 변경 모달 창 */
+#intro-edit .modal-content {
+  display: flex;
+  flex-direction: column; /* 세로로 정렬 */
+  justify-content: center; /* 수직으로 가운데 정렬 */
+  align-items: center; /* 수평으로 가운데 정렬 */
+}
+
+#intro-input {
+  width: 700px;
+  height: 50px;
+  margin-bottom: 10px; /* 버튼과의 간격 추가 */
+  font-size:20px;
+}
+
+/* 버튼들을 같은 줄에 정렬 */
+#save-intro-btn, #cancel-intro-btn {
+  margin: 5px; /* 버튼 간의 간격 추가 */
+  background-color: #242121;
+  border: none;
+  border-radius: 4px;
+  font-size: 20px;
+  color: #fff;
+  cursor: pointer;
+  padding: 0 30px 5px;
+}
+
+
+/* 버튼을 같은 줄에 두기 위한 부모 div */
+#button-container {
+  display: flex;
+  justify-content: center; /* 수평으로 가운데 정렬 */
+}
+
+.img-edit {
+  width: 400px;
+  height: 140px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.img-up, .img-up-del {
+  display: inline-block;
+  margin: 0;
+}
+
+.upload {
+  background-color: #242121;
+  border: none;
+  border-radius: 4px;
+  font-size: 17px;
+  color: #fff;
+  cursor: pointer;
+  padding: 18px 39px;
+  margin-top: 20px;
+}
+
+.upload:hover {
+  background-color: #464646;
+}
+
+.delete{
+  background-color: #242121;
+  border: none;
+  border-radius: 4px;
+  font-size: 17px;
+  color: #fff;
+  cursor: pointer;
+  padding: 18px 49px;
+  margin-top: 20px;
+}
+
+.delete:hover {
+  background-color: #464646;
+}
+
+.info-edit {
+  width: 400px;
+  height: 100px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/*유저 프로필 카드*/
+.profile-section {
+  margin-bottom: 20px;
+}
+
+/* 유저 모달 창*/
+.modal {
+  display: none; 
+  position: fixed; 
+  z-index: 1; 
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%; 
+  overflow: auto; 
+  background-color: rgb(0,0,0); 
+  background-color: rgba(0,0,0,0.4); 
+}
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; 
+  padding: 10px;
+  border: 1px solid #888;
+  width: 50%;
+  height: 30%; 
+  background-image: url('https://images.unsplash.com/photo-1520188740392-665a13f453fc?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); /* 배경 이미지 추가 */
+  background-size: cover; /* 이미지를 화면에 꽉 채우도록 설정 */
+  background-position: center center; /* 이미지 위치를 가운데 정렬 */
+  background-repeat: no-repeat; /* 배경 이미지 반복 없음 */
+}
+.close {
+  color: #000000;
+  float: right;
+  font-size: 40px;
+  font-weight: bold;
+}
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+/* 이름 변경 모달 창 */
+#new-name-input {
+  margin: 35px 1px; 
+  width: 50%;
+  height: 10%; 
+}
+#change-name-btn {
+  background-color: #242121;
+  border: none;
+  border-radius: 4px;
+  font-size: 25px;
+  color: #fff;
+  cursor: pointer;
+  padding: 0px 30px 9px;
+  margin: 0;
+}
+/* 비밀번호 변경 모달 창 */
+
+.modal-content input {
+  margin: 40px 1px; 
+  width: 15%;
+  height: 40px;
+}
+.modal-content label {
+  margin-left: 40px; 
+  color:#fff;
+  font-size: 20px;
+}
+#change-password-btn {
+  background-color: #242121;
+  border: none;
+  border-radius: 4px;
+  font-size: 25px;
+  color: #fff;
+  cursor: pointer;
+  padding: 0 30px 10px;
+  margin-top: 20px;
+}
+
+/* 비밀번호 변경버튼 */
+#edit-password-btn {
+  background-color: #242121;
+  border: none;
+  border-radius: 4px;
+  font-size: 15px;
+  color: #fff;
+  cursor: pointer;
+  padding: 20px 48px;
+}
+
+.form #password-change-form {
+  height: 200px;
+}
+
+/* 이름 변경버튼 */
+#edit-name-btn {
+  background-color: #242121;
+  border: none;
+  border-radius: 4px;
+  font-size: 15px;
+  color: #fff;
+  cursor: pointer;
+  padding: 20px 58px;
+}
+
+#edit-name-btn:hover {
+  background-color: #464646;
+}
+
+
+/* 회원탈퇴 */
+.user-exit button {
+  float: right;
+  background-color: red;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  padding: 10px 20px;
+  margin: 20px;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.user-exit button:hover {
+  background-color: #d50606;
+}
+
+/* 아코디언 메뉴 */
+input[id*="info"] {
+  display: none;
+}
+input[id*="info"] + label {
+  display: block;
+  padding: 20px;
+  border: 1px solid #464646;
+  border-bottom: 0;
+  color: #fff;
+  font-weight: 900;
+  background: #464646;
+  cursor: pointer;
+  position: relative;
+  font-size: 40px;
+  
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  align-items: center;
+}
+input[id*="info"] + label + div {
+  max-height: 0;
+  transition: max-height 0.35s ease; /* max-height에 transition 추가 */
+  overflow: hidden;
+  background: #e5e5e5;
+  font-size: 25px;
+
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  align-items: center;
+}
+input[id*="info"] + label + div p {
+  display: inline-block;
+  padding: 20px;
+  color: black;
+}
+input[id*="info"]:checked + label + div {
+  max-height: 10000px; /* 원하는 최대 높이로 조정 */
+}

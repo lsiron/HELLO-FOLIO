@@ -1,0 +1,136 @@
+/* 메인 타이틀 스타일 */
+.main-title {
+  text-align: center; /* 텍스트를 가운데 정렬 */
+  font-size: 4em; /* 글자 크기 조절 */
+  margin-top: 120px; /* 상단 여백 120px 추가 */
+  font-weight: 700; /* 글씨체를 더 진하게 설정 */
+  color: #FFFFFF; /* 글자 색상 흰색으로 설정 */
+  text-shadow: 6px 6px 6px rgba(0, 0, 0, 0.5); /* 텍스트 그림자 추가 */
+}
+
+/* 회색 배경 추가 */
+body.grey-bg {
+  background-color: #fffdfde7; /* 회색 배경색 */
+  color: #333; /* 텍스트 색상 */
+  font-family: 'Noto Sans KR', sans-serif; /* Noto Sans KR 폰트 적용 */
+  font-weight: 700; /* 기본 글씨체를 더 진하게 설정 */
+  background-image: url('https://images.unsplash.com/photo-1520188740392-665a13f453fc?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); /* 배경 이미지 추가 */
+  background-size: cover; /* 이미지를 화면에 꽉 채우도록 설정 */
+  background-position: center center; /* 이미지 위치를 가운데 정렬 */
+  background-repeat: no-repeat; /* 배경 이미지 반복 없음 */
+}
+
+/* 사용자 컨테이너를 포함한 부모 컨테이너 설정 */
+.main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 수직축 가운데 정렬 */
+  justify-content: center; /* 수평축 가운데 정렬 */
+  min-height: 60vh; /* 뷰포트 높이 60%로 설정 */
+}
+
+/* 사용자 컨테이너 스타일 */
+.users-container {
+  display: flex;
+  flex-wrap: wrap; /* 여러 줄로 나누기 위해 사용 */
+  justify-content: center; /* 중앙 정렬 */
+  gap: 24px; /* 카드 사이 간격 조절 */
+  transition: opacity 0.5s ease; /* 애니메이션 추가 */
+  opacity: 1;
+}
+
+.users-container.animate-exit {
+  opacity: 0;
+}
+
+.users-container.animate-enter {
+  opacity: 0;
+}
+
+.users-container.animate-enter-active {
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+.users-container a {
+  text-decoration: none;
+  color: black;
+  font-weight: 700; /* 글씨체를 더 진하게 설정 */
+}
+
+/* 사용자 카드 스타일 */
+.user-card {
+  width: 300px;
+  height: 500px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column; /* 세로 정렬을 위해 추가 */
+  align-items: center;
+  max-width: 300px; /* 필요에 따라 너비 조절 */
+  transition: transform 0.3s ease; /* 애니메이션 추가 */
+}
+
+.user-card:hover {
+  transform: scale(1.10); /* 마우스 오버 시 카드 크기 증가 */
+}
+
+/* 프로필 이미지 스타일 */
+.user-card img {
+  border-radius: 0%;
+  margin-bottom: 30px;
+  width: 270px; /* 이미지 크기 조절 */
+  height: 320px; /* 이미지 크기 조절 */
+  object-fit: cover;
+  border-radius: 10%;
+}
+
+/* 사용자 이름 스타일 */
+.user-card .user-nickname {
+  font-size: 2.0em;
+  font-weight: bold;
+  text-align: left;
+  font-family: 'Noto Sans KR', sans-serif; /* Noto Sans KR 폰트 적용 */
+  letter-spacing: 0.25em; /* 글자 사이 넓이 조절 */
+  font-weight: 700; /* 글씨체를 더 진하게 설정 */
+}
+
+/* 페이지네이션 스타일 */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 60px 0;
+  font-family: 'Noto Sans KR', sans-serif; /* Noto Sans KR 폰트 적용 */
+  font-weight: 700; /* 글씨체를 더 진하게 설정 */
+}
+
+.pagination a, .pagination span {
+  margin: 0 5px;
+  padding: 8px 16px;
+  text-decoration: none;
+  color: #000; /* 페이지네이션 텍스트 색상을 검은색으로 설정 */
+  background-color: #fff; /* 페이지네이션 배경색을 흰색으로 설정 */
+  border: 3px solid #ddd;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  font-weight: 700; /* 글씨체를 더 진하게 설정 */
+  font-size: 1.7em;
+  border-radius: 8px;
+}
+
+.pagination a:hover {
+  background-color: #f0f0f0; /* 호버 시 배경색 변경 */
+}
+
+.pagination span {
+  color: #000; /* 페이지네이션 비활성화 상태의 텍스트 색상을 검은색으로 설정 */
+  border-color: #ddd;
+}
+
+.footer-wrapper {
+  position: relative;
+  bottom: 0;
+}

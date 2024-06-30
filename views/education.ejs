@@ -1,0 +1,168 @@
+<link rel="stylesheet" href="/css/profile.css">
+
+<div class="content-section" id="education-section">
+    <h4 class="section-title">학 력</h4>
+    <button id="add-education-btn" class="add-button">학력 추가</button>
+
+    <div id="education-form" class="content-form">
+        <h5>학력 정보 입력</h5>
+        <form id="education-edit-form">
+            <input type="hidden" name="educationId">
+            
+            <label for="school">학교명:</label>
+            <input type="text" id="school" name="school" required class="input-field">
+            
+            <label for="major">전공:</label>
+            <input type="text" id="major" name="major" required class="input-field">
+            
+            <label for="degree">학위:</label>
+            <select id="degree" name="degree" required class="input-field">
+                <option value="고등학교">고등학교</option>
+                <option value="학사">학사</option>
+                <option value="석사">석사</option>
+                <option value="박사">박사</option>
+            </select>
+            
+            <label for="edu-startDate">입학일:</label>
+            <input type="date" id="edu-startDate" name="startDate" required class="input-field">
+            
+            <label for="edu-endDate">졸업일:</label>
+            <input type="date" id="edu-endDate" name="endDate" class="input-field">
+
+            <div class="button-container">
+                <button type="button" id="submit-education" class="action-button">저장</button>
+                <button type="button" id="cancel-education" class="action-button">취소</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="education-list" class="content-list"></div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const addButton = document.getElementById('add-education-btn');
+    const form = document.getElementById('education-form');
+    const editForm = document.getElementById('education-edit-form');
+    const submitButton = document.getElementById('submit-education');
+    const cancelButton = document.getElementById('cancel-education');
+    const educationList = document.getElementById('education-list');
+    const startDate = document.getElementById('edu-startDate');
+    const endDate = document.getElementById('eud-endDate');
+
+    startDate.addEventListener('change', function() {
+        endDate.min = this.value;
+    });    
+
+    addButton.addEventListener('click', () => {
+        form.classList.add('show');
+        addButton.style.display = 'none';
+        editForm.reset();
+        editForm.educationId.value = '';
+        submitButton.textContent = '등록';
+    });
+
+    cancelButton.addEventListener('click', () => {
+        form.classList.remove('show');
+        addButton.style.display = 'block';
+        editForm.reset();
+        document.querySelectorAll('.content-item').forEach(item => {
+            item.style.display = 'block';
+        });
+    });
+
+    submitButton.addEventListener('click', async () => {
+        const formData = new FormData(editForm);
+        const educationData = Object.fromEntries(formData.entries());
+        const isEdit = educationData.educationId !== '';
+
+        const url = isEdit ? `/myPage/education/${educationData.educationId}` : '/myPage/education';
+        const method = isEdit ? 'PUT' : 'POST';
+
+        const response = await fetch(url, {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(educationData),
+        });
+
+        if (response.ok) {
+            editForm.reset();
+            form.classList.remove('show');
+            addButton.style.display = 'block';
+            fetchEducationList();
+        }
+    });
+
+    async function fetchEducationList() {
+        const response = await fetch(`/myPage/education`);
+        if (response.ok) {
+            const educationData = await response.json();
+            const educations = Array.isArray(educationData) ? educationData : [educationData];
+            window.educationsList = educations;
+            renderEducationList(educations);
+        }
+    }
+    
+    function renderEducationList(educations) {
+        educationList.innerHTML = '';
+        if (educations.length === 0) {
+            educationList.innerHTML = '<p>등록된 학력 정보가 없습니다.</p>';
+            return;
+        }
+        educations.forEach(education => {
+            const educationItem = document.createElement('div');
+            educationItem.className = 'content-item';
+            educationItem.dataset.id = education._id;
+            educationItem.innerHTML = `
+                <p>학교명: ${education.school}</p>
+                <p>학위: ${education.degree}</p>
+                <p>전공: ${education.major}</p>
+                <p>기간: ${new Date(education.startDate).toLocaleDateString()} ~ ${education.endDate ? new Date(education.endDate).toLocaleDateString() : '현재'}</p>
+                <button onclick="editEducation('${education._id}')" class="action-button">수정</button>
+                <button onclick="deleteEducation('${education._id}')" class="action-button">삭제</button>
+            `;
+            educationList.appendChild(educationItem);
+        });
+    }
+
+    window.editEducation = function(id) {
+        const education = window.educationsList.find(edu => edu._id === id);
+        
+        if (education) {
+            document.querySelectorAll('.content-item').forEach(item => {
+                item.style.display = 'block';
+            });
+
+            const editingItem = document.querySelector(`.content-item[data-id="${id}"]`);
+            if (editingItem) {
+                editingItem.style.display = 'none';
+            }
+
+            editForm.educationId.value = education._id;
+            editForm.school.value = education.school;
+            editForm.major.value = education.major;
+            editForm.degree.value = education.degree;
+            editForm.startDate.value = new Date(education.startDate).toISOString().split('T')[0];
+            editForm.endDate.value = education.endDate ? new Date(education.endDate).toISOString().split('T')[0] : '';
+
+            form.classList.add('show');
+            addButton.style.display = 'none';
+            submitButton.textContent = '수정';
+        }
+    };
+
+    window.deleteEducation = async function(id) {
+        const response = await fetch(`/myPage/education/${id}`, {
+            method: 'DELETE',
+        });
+
+        if (response.ok) {
+            fetchEducationList();
+        }
+    };
+
+    fetchEducationList();
+});
+</script>

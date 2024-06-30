@@ -1,0 +1,147 @@
+<link rel="stylesheet" href="/css/profile.css">
+
+<div class="content-section" id="award-section">
+    <h4 class="section-title">수 상</h4>
+    <button id="add-award-btn" class="add-button">수상 추가</button>
+
+    <div id="award-form" class="content-form">
+        <h5>수상 정보 입력</h5>
+        <form id="award-edit-form">
+            <input type="hidden" name="awardId">
+            <label for="content">수상 명:</label>
+            <input type="text" id="content" name="content" required class="input-field">
+            
+            <label for="organization">수여 기관:</label>
+            <input type="text" id="organization" name="organization" required class="input-field">
+
+            <label for="award-date">수상 날짜:</label>
+            <input type="date" id="award-date" name="getDate" required class="input-field">
+            
+            <div class="button-container">
+                <button type="button" id="submit-award" class="action-button">저장</button>
+                <button type="button" id="cancel-award" class="action-button">취소</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="content-list" id="award-list"></div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const addButton = document.getElementById('add-award-btn');
+    const form = document.getElementById('award-form');
+    const editForm = document.getElementById('award-edit-form');
+    const submitButton = document.getElementById('submit-award');
+    const cancelButton = document.getElementById('cancel-award');
+    const awardList = document.getElementById('award-list');
+
+    addButton.addEventListener('click', () => {
+        form.classList.add('show');
+        addButton.style.display = 'none';
+        editForm.reset();
+        editForm.awardId.value = '';
+        submitButton.textContent = '등록';
+    });
+
+    cancelButton.addEventListener('click', () => {
+        form.classList.remove('show');
+        addButton.style.display = 'block';
+        editForm.reset();
+        document.querySelectorAll('.content-item').forEach(item => {
+            item.style.display = 'block';
+        });
+    });
+
+    submitButton.addEventListener('click', async () => {
+        const formData = new FormData(editForm);
+        const awardData = Object.fromEntries(formData.entries());
+        const isEdit = awardData.awardId !== '';
+
+        const url = isEdit ? `/myPage/award/${awardData.awardId}` : '/myPage/award';
+        const method = isEdit ? 'PUT' : 'POST';
+
+        const response = await fetch(url, {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(awardData),
+        });
+
+        if (response.ok) {
+            editForm.reset();
+            form.classList.remove('show');
+            addButton.style.display = 'block';
+            fetchAwardList();
+        }
+    });
+
+    async function fetchAwardList() {
+        const response = await fetch(`/myPage/award`);
+        if (response.ok) {
+            const awardData = await response.json();
+            const awards = Array.isArray(awardData) ? awardData : [awardData];
+            window.awardsList = awards;
+            renderAwardList(awards);
+        }
+    }
+    
+    function renderAwardList(awards) {
+        awardList.innerHTML = '';
+        if (awards.length === 0) {
+            awardList.innerHTML = '<p>등록된 수상 정보가 없습니다.</p>';
+            return;
+        }
+        awards.forEach(award => {
+            const awardItem = document.createElement('div');
+            awardItem.className = 'content-item';
+            awardItem.dataset.id = award._id;
+            awardItem.innerHTML = `
+                <span>수상 명: ${award.content}</span>
+                <span>수여 기관: ${award.organization}</span>
+                <span>수상 날짜: ${new Date(award.getDate).toLocaleDateString()}</span>
+                <button onclick="editAward('${award._id}')" class="action-button">수정</button>
+                <button onclick="deleteAward('${award._id}')" class="action-button">삭제</button>
+            `;
+            awardList.appendChild(awardItem);
+        });
+    }
+
+    window.editAward = function(id) {
+        const award = window.awardsList.find(awd => awd._id === id);
+        
+        if (award) {
+            document.querySelectorAll('.content-item').forEach(item => {
+                item.style.display = 'block';
+            });
+
+            const editingItem = document.querySelector(`.content-item[data-id="${id}"]`);
+            if (editingItem) {
+                editingItem.style.display = 'none';
+            }
+
+            editForm.awardId.value = award._id;
+            editForm.content.value = award.content;
+            editForm.organization.value = award.organization;
+            editForm.getDate.value = new Date(award.getDate).toISOString().split('T')[0];
+
+            form.classList.add('show');
+            addButton.style.display = 'none';
+            submitButton.textContent = '수정';
+        }
+    };
+
+    window.deleteAward = async function(id) {
+        const response = await fetch(`/myPage/award/${id}`, {
+            method: 'DELETE',
+        });
+
+        if (response.ok) {
+            fetchAwardList();
+        }
+    };
+
+    fetchAwardList();
+});
+</script>

@@ -1,0 +1,142 @@
+<link rel="stylesheet" href="/css/profile.css">
+
+<div id="certification-section" class="content-section">
+    <h4 class="section-title">자 격 증</h4>
+    <button id="add-certification-btn" class="add-button">자격증 추가</button>
+
+    <div id="certification-form" class="content-form">
+        <h5>자격증 정보 입력</h5>
+        <form id="certification-edit-form">
+            <input type="hidden" name="certificationId">
+            <label for="name">자격증 명:</label>
+            <input type="text" id="name" name="name" required class="input-field">
+            
+            <label for="cert-date">취득 일:</label>
+            <input type="date" id="cert-date" name="getDate" required class="input-field">
+            
+            <div class="button-container">
+                <button type="button" id="submit-certification" class="action-button">저장</button>
+                <button type="button" id="cancel-certification" class="action-button">취소</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="certification-list" class="content-list"></div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const addButton = document.getElementById('add-certification-btn');
+    const form = document.getElementById('certification-form');
+    const editForm = document.getElementById('certification-edit-form');
+    const submitButton = document.getElementById('submit-certification');
+    const cancelButton = document.getElementById('cancel-certification');
+    const certificationList = document.getElementById('certification-list');
+
+    addButton.addEventListener('click', () => {
+        form.classList.add('show');
+        addButton.style.display = 'none';
+        editForm.reset();
+        editForm.certificationId.value = '';
+        submitButton.textContent = '등록';
+    });
+
+    cancelButton.addEventListener('click', () => {
+        form.style.display = 'none';
+        addButton.style.display = 'block';
+        editForm.reset();
+        document.querySelectorAll('.certification-item').forEach(item => {
+            item.style.display = 'block';
+        });
+    });
+
+    submitButton.addEventListener('click', async () => {
+        const formData = new FormData(editForm);
+        const certificationData = Object.fromEntries(formData.entries());
+        const isEdit = certificationData.certificationId !== '';
+
+        const url = isEdit ? `/myPage/certification/${certificationData.certificationId}` : '/myPage/certification';
+        const method = isEdit ? 'PUT' : 'POST';
+
+        const response = await fetch(url, {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(certificationData),
+        });
+
+        if (response.ok) {
+            editForm.reset();
+            form.style.display = 'none';
+            addButton.style.display = 'block';
+            fetchCertificationList();
+        }
+    });
+
+    async function fetchCertificationList() {
+        const response = await fetch(`/myPage/certification`);
+        if (response.ok) {
+            const certificationData = await response.json();
+            const certifications = Array.isArray(certificationData) ? certificationData : [certificationData];
+            window.certificationsList = certifications;
+            renderCertificationList(certifications);
+        }
+    }
+    
+    function renderCertificationList(certifications) {
+        certificationList.innerHTML = '';
+        if (certifications.length === 0) {
+            certificationList.innerHTML = '<p>등록된 자격증 정보가 없습니다.</p>';
+            return;
+        }
+        certifications.forEach(certification => {
+            const certificationItem = document.createElement('div');
+            certificationItem.className = 'content-item certification-item';
+            certificationItem.dataset.id = certification._id;
+            certificationItem.innerHTML = `
+                <span>자격증 명: ${certification.name}</span>
+                <span>취득일: ${new Date(certification.getDate).toLocaleDateString()}</span>
+                <button onclick="editCertification('${certification._id}')" class="action-button">수정</button>
+                <button onclick="deleteCertification('${certification._id}')" class="action-button">삭제</button>
+            `;
+            certificationList.appendChild(certificationItem);
+        });
+    }
+
+    window.editCertification = function(id) {
+        const certification = window.certificationsList.find(cert => cert._id === id);
+        
+        if (certification) {
+            document.querySelectorAll('.certification-item').forEach(item => {
+                item.style.display = 'block';
+            });
+
+            const editingItem = document.querySelector(`.certification-item[data-id="${id}"]`);
+            if (editingItem) {
+                editingItem.style.display = 'none';
+            }
+
+            editForm.certificationId.value = certification._id;
+            editForm.name.value = certification.name;
+            editForm.getDate.value = new Date(certification.getDate).toISOString().split('T')[0];
+
+            form.style.display = 'block';
+            addButton.style.display = 'none';
+            submitButton.textContent = '수정';
+        }
+    };
+
+    window.deleteCertification = async function(id) {
+        const response = await fetch(`/myPage/certification/${id}`, {
+            method: 'DELETE',
+        });
+
+        if (response.ok) {
+            fetchCertificationList();
+        }
+    };
+
+    fetchCertificationList();
+});
+</script>

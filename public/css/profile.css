@@ -1,0 +1,105 @@
+/* 전체적인 폰트와 배경 스타일 설정 */
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background-color: #464646;
+  color: #ffffff;
+  margin: 0;
+}
+
+/* 섹션 공통 스타일 */
+.content-section {
+  font-size: 20px;
+  background: linear-gradient(to bottom right, #464646, #242121);
+  color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+  padding: 20px;
+  font-weight: 700;
+}
+
+/* 섹션 제목 스타일 */
+.section-title {
+  margin: 0 0 10px;
+  font-size: 30px;
+}
+
+/* 추가 버튼 스타일 */
+.add-button {
+  background-color: #242121;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  padding: 10px 20px;
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.add-button:hover {
+  background-color: #464646;
+}
+
+/* 폼 스타일 */
+.content-form {
+  display: none;
+  margin-bottom: 20px;
+}
+
+.content-form.show {
+  display: block;
+}
+
+/* 입력 필드 스타일 */
+.input-field {
+  width: 100%;
+  padding: 8px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+
+/* 버튼 container 가운데 정렬 확인 */
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+/* 버튼 스타일 수정 */
+.action-button {
+  background-color: #242121;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  padding: 10px 20px;
+  font-size: 16px;
+  margin: 0 10px;
+  transition: background-color 0.3s ease;
+}
+
+.action-button:hover {
+  background-color: #464646;
+}
+
+/* 목록 스타일 */
+.content-list {
+  margin-top: 20px;
+}
+
+.content-item {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.content-item span {
+  display: block;
+  margin-bottom: 5px;
+}

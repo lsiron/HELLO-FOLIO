@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MY PAGE</title>
+  <link rel="stylesheet" href="/css/myPage.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- date 타입에서 달력 대신에 input창 누르고 달력 출력 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+</head>
+
+<body class="grey-bg">
+  <%- include('header', { user: user }) %>
+<div class="all-content">
+  <div class="left-column">
+    <div class="user-info">
+      <div class="user-img">
+        <% if (user.imageUrl) { %>
+        <img src="<%= user.imageUrl %>" alt="Profile Image">
+        <% } %>
+      </div>
+          <div class="user-name-email">
+            <div><%= user.name %></div>
+            <div data-user-email="<%= user.email %>"><%= user.email %></div>
+          </div>
+      <div class="user-introduction">
+          <div id="intro-display">
+            <% if (info && info.content) { %>
+            <p id="intro-text"><%= info.content %></p>
+            <% } else { %>
+            <p id="intro-text">자기소개를 입력해 주세요.</p>
+            <% } %>
+          <button id="edit-intro-btn">편집</button>
+         </div>
+        <div id="intro-edit" class="modal" style="display: none;">
+          <div class="modal-content">
+            <textarea id="intro-input" placeholder="자기소개를 20자 이내로 적어주세요"><%= info ? info.content : '' %></textarea>            <div id="button-container">
+              <button id="save-intro-btn">저장</button>
+              <button id="cancel-intro-btn">취소</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="img-edit">
+      <div class="img-select">
+      <form action="/myPage/upload" method="POST" enctype="multipart/form-data">
+        <input type="file" name="profileImage">
+      </div>
+      <div class="img-up">
+        <button class="upload" type="submit">이미지 업로드</button>
+      </form>
+      </div>
+      <div class="img-up-del">
+      <form action="/myPage/delete?_method=DELETE" method="POST">
+        <button class="delete">이미지 삭제</button> 
+      </form>
+    </div>
+    </div>
+    <div class="info-edit">
+      <!--이름 변경-->
+      <button id="edit-name-btn">이름 변경</button>
+      <div id="name-change-modal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <span class="close">X</span>
+        <label>새 이름:</label>
+        <input type="text" id="new-name-input" placeholder="새 이름을 입력하세요">
+        <button id="change-name-btn">변경</button>
+      </div>
+      </div>
+      <!--비밀번호 변경-->
+      <button id="edit-password-btn">비밀번호 변경</button>
+    <div id="password-change-modal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <span class="close">X</span>
+        <form id="password-change-form">
+          <label for="current-password">기존 비밀번호:</label>
+          <input type="password" id="current-password" required><br>
+          <label for="new-password">새 비밀번호:</label>
+          <input type="password" id="new-password" required>
+          <label for="confirm-password">새 비밀번호 확인:</label>
+          <input type="password" id="confirm-password" required>
+          <button id="change-password-btn" type="submit">변경</button>
+        </form>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="right-column">
+    <!-- Profile Sections -->
+    <div class="profile-section">
+      <!-- <span>학력</span> -->
+      <%- include('education.ejs', { education }) %>
+    </div>
+    <div class="profile-section">
+      <!-- <span>수상이력</span> -->
+      <%- include('award.ejs', { award }) %>
+    </div>
+    <div class="profile-section">
+      <!-- <span>프로젝트</span> -->
+      <%- include('project.ejs', { project }) %>
+    </div>
+    <div class="profile-section">
+      <!-- <span>자격증</span> -->
+      <%- include('certification.ejs', { certification }) %>
+    </h2>
+
+    <div class="user-exit">
+      <form action="/myPage/deactivate?_method=DELETE" method="POST" onsubmit="return confirmDeactivation()">
+        <button type="submit" class="deactivate">회원탈퇴</button>
+      </form>
+    </div>
+  </div>
+  </div>
+  <%- include('footer.ejs') %>
+
+  <script>
+    const userId = "<%= user._id %>";
+    const userIntroduction = "<%= info ? info.content : '' %>";
+  </script>
+  <script src="/js/myPage/update.js"></script>
+  <script src="/js/myPage/info.js"></script>
+  <script src="/js/myPage/unregister.js"></script>
+
+  <!-- 달력 관련  script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // education
+      const eduStartDate = document.getElementById('edu-startDate');
+      const eduEndDate = document.getElementById('edu-endDate');
+      if (eduStartDate && eduEndDate) {
+        flatpickr(eduStartDate, {
+          dateFormat: "Y-m-d",
+          onChange: function(selectedDates, dateStr) {
+            eduEndDatePicker.set('minDate', dateStr);
+          }
+        });
+        const eduEndDatePicker = flatpickr(eduEndDate, {
+          dateFormat: "Y-m-d",
+        });
+      }
+    
+      // project 
+      const projStartDate = document.getElementById('proj-startDate');
+      const projEndDate = document.getElementById('proj-endDate');
+      if (projStartDate && projEndDate) {
+        flatpickr(projStartDate, {
+          dateFormat: "Y-m-d",
+          onChange: function(selectedDates, dateStr) {
+            projEndDatePicker.set('minDate', dateStr);
+          }
+        });
+        const projEndDatePicker = flatpickr(projEndDate, {
+          dateFormat: "Y-m-d",
+        });
+      }
+    
+      // award
+      const awardDate = document.getElementById('award-date');
+      if (awardDate) {
+        flatpickr(awardDate, {
+          dateFormat: "Y-m-d",
+        });
+      }
+    
+      // certification
+      const certDate = document.getElementById('cert-date');
+      if (certDate) {
+        flatpickr(certDate, {
+          dateFormat: "Y-m-d",
+        });
+      }
+    });
+    </script>
+</body>
+</html>

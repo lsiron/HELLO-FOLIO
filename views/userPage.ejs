@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= user.name%>'S PAGE</title>
+  <link rel="stylesheet" href="/css/userPage.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+  
+  <!-- Flatpickr 리소스 추가 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+</head>
+
+<body class="grey-bg">
+  <%- include('header', { user: loggedInUser }) %>
+<div class="all-content">
+  <!-- 왼쪽 -->
+  <div class="left-column">
+    <div class="user-info">
+      <div class="user-img">
+        <% if (user.imageUrl) { %>
+        <img src="<%= user.imageUrl %>" alt="Profile Image">
+        <% } %>
+      </div>
+      <div class="user-name-email">
+        <div><%= user.name %></div>
+        <div><%= user.email %></div>
+      </div>
+      <div class="user-introduction">
+        <div id="intro-display">
+          <% if (info && info.content) { %>
+          <p id="intro-text"><%= info.content %></p>
+          <% } else { %>
+          <p id="intro-text">자기소개가 없습니다.</p>
+          <% } %>
+        </div>
+      </div>
+    </div>
+
+ <!-- 댓글 목록 -->
+ <div class="comments">
+ <div>
+  <h2>댓글 목록</h2>
+  <div id="comments-list">
+    <% comment.forEach(comment => { %>
+    <div id="comment-<%= comment._id %>" class="comments-content">
+      <strong><%= comment.writer %>:</strong> <span class="comment-text"><%= comment.comment %></span>
+      <br><small><%= new Date(comment.createdAt).toLocaleString() %></small>
+      <button class="edit-button" data-id="<%= comment._id %>">수정</button>
+      <button class="delete-button" data-id="<%= comment._id %>">삭제</button>
+    </div>
+    <% }) %>
+  </div>
+</div>
+
+<div class="pagination">
+  <% if (hasPrev) { %>
+    <a href="/userPage/<%= user._id %>?page=<%= currentPage - 1 %>">❮</a>
+  <% } else { %>
+    <span>❮</span>
+  <% } %>
+
+  <% for (let i = 1; i <= totalPages; i++) { %>
+    <% if (i === currentPage) { %>
+      <span><%= i %></span>
+    <% } else { %>
+      <a href="/userPage/<%= user._id %>?page=<%= i %>"><%= i %></a>
+    <% } %>
+  <% } %>
+
+  <% if (hasNext) { %>
+    <a href="/userPage/<%= user._id %>?page=<%= currentPage + 1 %>">❯</a>
+  <% } else { %>
+    <span>❯</span>
+  <% } %>
+</div>
+
+<!-- 수정 모달 -->
+<div id="edit-modal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <h3>댓글 수정</h3>
+    <textarea id="edit-comment" required></textarea><br />
+    <input type="password" id="edit-password" required placeholder="비밀번호를 입력하세요"><br />
+    <button id="update-comment" class="delete-comment-button">수정</button> <!-- 클래스 변경 -->
+    <button id="edit-close" class="">닫기</button> <!-- 클래스 변경 -->
+  </div>
+</div>
+
+<!-- 삭제 모달 -->
+<div id="delete-modal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <h3>댓글 삭제</h3>
+    <input type="password" id="delete-password" required placeholder="비밀번호를 입력하세요"><br />
+    <input type="hidden" id="delete-comment-id">
+    <button id="delete-comment" class="delete-comment-button">삭제</button> <!-- 클래스 변경 -->
+    <button id="delete-close">닫기</button> <!-- 클래스 변경 -->
+  </div>
+</div>
+
+<!-- 댓글 작성 폼 -->
+<div class="comments-add">
+  <h3>댓글 작성</h3>
+  <form id="commentForm">
+    <textarea id="comment" name="comment" required placeholder="댓글을 20자 이내로 작성하세요"></textarea>
+    <input type="password" id="password" name="password" required placeholder="비밀번호">
+    <input type="hidden" id="parentId" name="parentId" value="<%= user._id %>">
+    <button type="submit" class="send-button">댓글 작성</button>
+  </form>
+</div>
+</div>
+</div>
+
+
+  <!-- 오른쪽 -->
+  <div class="right-column">
+    <div class="accordion">
+      <input type="checkbox" id="info01">
+      <label for="info01">학 력</label>
+      <div>
+        <% if (education && education.length > 0) { %>
+          <% education.forEach(edu => { %>
+            <div>
+              <p>
+              <span>학교명: <%= edu.school %></span>
+              <span>학위: <%= edu.degree %></span>
+              <span>전공: <%= edu.major %></span>
+              <span>기간: <span class="date-format"><%= edu.startDate %></span> ~ <span class="date-format"><%= edu.endDate || '현재' %></span></span>
+            </p>
+          </div>
+          <% }) %>
+        <% } else { %>
+          <p>학력 정보가 없습니다.</p>
+        <% } %>
+      </div>
+
+      <input type="checkbox" id="info02">
+      <label for="info02">수 상 이 력</label>
+      <div>
+        <% if (award && award.length > 0) { %>
+          <% award.forEach(award => { %>
+            <div>
+              <p>
+              <span>수상 이름: <%= award.content %></span>
+              <span>기관 이름: <%= award.organization %></span>
+              <span>수상 날짜: <span class="date-format"><%= award.getDate %></span></span>
+            </p>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <p>수상 정보가 없습니다.</p>
+        <% } %>
+      </div>
+
+      <input type="checkbox" id="info03">
+      <label for="info03">프 로 젝 트</label>
+      <div>
+        <% if (project && project.length > 0) { %>
+          <% project.forEach(proj => { %>
+            <div>
+              <p>
+                <span>프로젝트 명: <%= proj.title %></span>
+                <span>프로젝트 내용: <%= proj.content %></span>
+                <span>역할: <%= proj.role %></span>
+                <span>기간: <span class="date-format"><%= proj.startDate %></span> ~ <span class="date-format"><%= proj.endDate || '현재 진행' %></span></span>
+              </p>
+              </div>
+          <% }) %>
+        <% } else { %>
+          <p>프로젝트 정보가 없습니다.</p>
+        <% } %>
+      </div>
+
+      <input type="checkbox" id="info04">
+      <label for="info04">자 격 증</label>
+      <div>
+        <% if (certification && certification.length > 0) { %>
+          <% certification.forEach(cert => { %>
+            <div>
+              <p>
+                <span>자격증 명: <%= cert.name %></span>
+                <span>취득일: <span class="date-format"><%= cert.getDate %></span></span>
+            </p>
+          </div>
+          <% }) %>
+        <% } else { %>
+          <p>자격증 정보가 없습니다.</p>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('footer.ejs') %>
+
+<script src="/js/userPage/comment.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 날짜 포맷 함수
+    function formatDate(dateString) {
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      return new Date(dateString).toLocaleDateString('ko-KR', options);
+    }
+  
+    // 페이지 내의 모든 날짜 포맷 변경
+    document.querySelectorAll('.date-format').forEach(element => {
+      const originalDate = element.textContent;
+      if (originalDate && originalDate !== '현재' && originalDate !== '현재 진행') {
+        element.textContent = formatDate(originalDate);
+      }
+    });
+  });
+  </script>
+  
+</body>
+</html>

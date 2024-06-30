@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HELLO FOLIO</title>
+  <link rel="stylesheet" href="/css/home.css"> <!--css 링크 수정 필요-->
+</head>
+<body>
+  <div class="container">
+    <h1 id="title">H E L L O&nbsp;&nbsp;F O L I O</h1>
+    <p id="produce">Show & Share your Portfolio</p>
+
+    <h2 class="login-title">로그인</h2><br>
+
+    <!-- 로그인 폼 구현 -->
+    <div class="login-form">
+      <form id="login-form" action="/login" method="post"> 
+        <div class="input-group">
+          <input class="login" id="email" name="email" type="text" placeholder="email">
+          <p id="email-error" class="error-message"></p>
+          <input class="login" id="password" name="password" type="password" placeholder="password">
+          <p id="password-error" class="error-message"></p>
+        </div>
+        <button class="login-button" type="submit">로그인</button><br>
+        <hr>
+
+        <span id="signup-message">아직 계정이 없으신가요?</span>
+        <button class="signup-button" type="button" onclick="location.href='/register'" style="text-decoration: none; color: black;">회원가입</button>
+        <button class="signup-button" type="button" onclick="location.href='/forgot-password'" style="text-decoration: none; color: black;">비밀번호 재설정</button>
+      </form>
+    </div>
+  </div>
+
+   <!-- 애니메이션 오버레이 추가 -->
+   <div class="overlay" id="animationOverlay">
+    <h1>H E L L O&nbsp;&nbsp;F O L I O</h1>
+  </div>
+
+  <script>
+      // 서버에서 error 메세지 받아오기
+     document.addEventListener('DOMContentLoaded', function() {
+      const errorMessage = '<%= typeof errorMessage !== "undefined" ? errorMessage : "" %>';
+      if (errorMessage) {
+        alert(errorMessage);
+      }
+    });
+  </script>
+  <script src="/js/auth/home.js"></script>
+</body>
+</html>

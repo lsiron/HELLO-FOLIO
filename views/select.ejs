@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HELLO FOLIO</title>
+    <link rel="stylesheet" href="/css/select.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="grey-bg">
+  <%- include('header', { user: user }) %>
+  <h1 class="main-title">Show & Share your Portfolio</h1>
+  <div class="header-wrapper">
+  </div>
+<div class="main-container"> <!-- 새로운 부모 컨테이너 -->
+    <div class="users-container">
+    <% for (let i =0 ; i < users.length; i += 1){ %> 
+      <a href="/userPage/<%= users[i]._id %>">
+      <div class="user-card">
+        <% if (users[i].imageUrl) { %>
+          <img src="<%= users[i].imageUrl %>" alt="Profile Image">
+        <% } %>
+          <div class = "user-nickname"><%= users[i].name %></div>
+      </div>
+     </a> 
+    <% } %>
+    </div> 
+
+    <div class="pagination">
+      <% if (hasPrev) { %>
+        <a href="/select?page=<%= currentPage - 1 %>">❮</a>
+      <% } else { %>
+        <span>❮</span>
+      <% } %>
+    
+      <% for (let i = 1; i <= totalPages; i++) { %>
+        <% if (i === currentPage) { %>
+          <span><%= i %></span>
+        <% } else { %>
+          <a href="/select?page=<%= i %>"><%= i %></a>
+        <% } %>
+      <% } %>
+    
+      <% if (hasNext) { %>
+        <a href="/select?page=<%= currentPage + 1 %>">❯</a>
+      <% } else { %>
+        <span>❯</span>
+      <% } %>
+    </div>
+</div> <!-- 부모 컨테이너 닫기 -->
+  <div class="footer-wrapper">
+    <%-include('footer.ejs')%>
+  </div>
+  </body>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // pagination 효과
+      const paginationLinks = document.querySelectorAll('.pagination a');
+      const usersContainer = document.querySelector('.users-container');
+
+      paginationLinks.forEach(link => {
+        link.addEventListener('click', function(event) {
+          event.preventDefault();
+
+          usersContainer.classList.remove('animate-enter', 'animate-enter-active');
+          usersContainer.classList.add('animate-exit');
+
+          setTimeout(() => {
+            window.location.href = this.href;
+          }, 400); // 애니메이션 지속 시간에 맞춰 타이밍 조절
+        });
+      });
+
+      if (usersContainer) {
+        usersContainer.classList.add('animate-enter');
+
+        setTimeout(() => {
+          usersContainer.classList.add('animate-enter-active');
+        }, 0);
+      }
+    });
+  </script>
+</html>
+

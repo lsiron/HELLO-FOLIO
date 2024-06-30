@@ -1,0 +1,41 @@
+<link rel="stylesheet" href="/css/header.css">
+
+<header class="site-header">
+    <div class="brand">
+        <h1><a id="title" href="/select">H E L L O&nbsp;&nbsp;F O L I O</a></h1>
+    </div>
+    <div class="profile">
+            <img src="<%= user.imageUrl %>" alt="프로필 사진">
+        <div class="profile-menu">
+            <!-- 프로필 사진 클릭 시 펼쳐질 메뉴 -->
+            <ul>
+                <li><a href="/myPage">MY PAGE</a></li>
+                <li><a href="/select">USER PAGE</a></li>
+                <li><a href="/logout">LOGOUT</a></li>
+            </ul>
+        </div>
+    </div>
+</header>
+
+
+<!-- JavaScript 예시 -->
+<script>
+    // JavaScript로 내 정보 링크 클릭 시 드롭다운 메뉴가 닫히지 않도록 설정
+    document.addEventListener('DOMContentLoaded', function() {
+        var profileMenu = document.querySelector('.profile-menu');
+
+        profileMenu.addEventListener('click', function(event) {
+            event.stopPropagation(); // 클릭 이벤트가 상위로 전파되지 않도록 함
+        });
+
+        document.addEventListener('click', function() {
+            profileMenu.style.display = 'none'; // 다른 곳을 클릭하면 메뉴가 닫히도록 설정
+        });
+
+        var profileImg = document.querySelector('.profile img');
+        profileImg.addEventListener('click', function(event) {
+            event.stopPropagation(); // 프로필 이미지를 클릭했을 때는 아무 일도 일어나지 않도록 함
+            profileMenu.style.display = (profileMenu.style.display === 'block') ? 'none' : 'block';
+        });
+    });
+</script>

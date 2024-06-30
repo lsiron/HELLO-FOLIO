@@ -1,0 +1,162 @@
+<link rel="stylesheet" href="/css/profile.css">
+
+<div class="content-section" id="project-section">
+    <h4 class="section-title">프 로 젝 트</h4>
+    <button id="add-project-btn" class="add-button">프로젝트 추가</button>
+
+    <div id="project-form" class="content-form">
+        <h5>프로젝트 정보 입력</h5>
+        <form id="project-edit-form">
+            <input type="hidden" name="projectId">
+            
+            <label for="projectTitle">프로젝트 이름:</label>
+            <input type="text" id="projectTitle" name="title" required class="input-field">
+            
+            <label for="content">프로젝트 내용:</label>
+            <input type="text" id="content" name="content" required class="input-field">
+            
+            <label for="role">역할:</label>
+            <input type="text" id="role" name="role" required class="input-field">
+            
+            <label for="proj-startDate">시작일:</label>
+            <input type="date" id="proj-startDate" name="startDate" required class="input-field">
+            
+            <label for="proj-endDate">종료일:</label>
+            <input type="date" id="proj-endDate" name="endDate" class="input-field">
+
+            <div class="button-container">
+                <button type="button" id="submit-project" class="action-button">저장</button>
+                <button type="button" id="cancel-project" class="action-button">취소</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="project-list" class="content-list"></div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const addButton = document.getElementById('add-project-btn');
+    const form = document.getElementById('project-form');
+    const editForm = document.getElementById('project-edit-form');
+    const submitButton = document.getElementById('submit-project');
+    const cancelButton = document.getElementById('cancel-project');
+    const projectList = document.getElementById('project-list');
+    const startDate = document.getElementById('proj-startDate');
+    const endDate = document.getElementById('proj-endDate');
+
+    startDate.addEventListener('change', function() {
+        endDate.min = this.value;
+    });
+    addButton.addEventListener('click', () => {
+        form.classList.add('show');
+        addButton.style.display = 'none';
+        editForm.reset();
+        editForm.projectId.value = '';
+        submitButton.textContent = '등록';
+    });
+
+    cancelButton.addEventListener('click', () => {
+        form.classList.remove('show');
+        addButton.style.display = 'block';
+        editForm.reset();
+        document.querySelectorAll('.content-item').forEach(item => {
+            item.style.display = 'block';
+        });
+    });
+
+    submitButton.addEventListener('click', async () => {
+        const formData = new FormData(editForm);
+        const projectData = Object.fromEntries(formData.entries());
+        const isEdit = projectData.projectId !== '';
+
+        const url = isEdit ? `/myPage/project/${projectData.projectId}` : '/myPage/project';
+        const method = isEdit ? 'PUT' : 'POST';
+
+        const response = await fetch(url, {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(projectData),
+        });
+
+        if (response.ok) {
+            editForm.reset();
+            form.classList.remove('show');
+            addButton.style.display = 'block';
+            fetchProjectList();
+        }
+    });
+
+    async function fetchProjectList() {
+        const response = await fetch(`/myPage/project`);
+        if (response.ok) {
+            const projectData = await response.json();
+            const projects = Array.isArray(projectData) ? projectData : [projectData];
+            window.projectsList = projects;
+            renderProjectList(projects);
+        }
+    }
+    
+    function renderProjectList(projects) {
+        projectList.innerHTML = '';
+        if (projects.length === 0) {
+            projectList.innerHTML = '<p>등록된 프로젝트 정보가 없습니다.</p>';
+            return;
+        }
+        projects.forEach(project => {
+            const projectItem = document.createElement('div');
+            projectItem.className = 'content-item';
+            projectItem.dataset.id = project._id;
+            projectItem.innerHTML = `
+                <p>프로젝트 명: ${project.title}</p>
+                <p>프로젝트 내용: ${project.content}</p>
+                <p>역할: ${project.role}</p>
+                <p>기간: ${new Date(project.startDate).toLocaleDateString()} ~ ${project.endDate ? new Date(project.endDate).toLocaleDateString() : '현재 진행'}</p>
+                <button onclick="editProject('${project._id}')" class="action-button">수정</button>
+                <button onclick="deleteProject('${project._id}')" class="action-button">삭제</button>
+            `;
+            projectList.appendChild(projectItem);
+        });
+    }
+
+    window.editProject = function(id) {
+        const project = window.projectsList.find(proj => proj._id === id);
+        
+        if (project) {
+            document.querySelectorAll('.content-item').forEach(item => {
+                item.style.display = 'block';
+            });
+
+            const editingItem = document.querySelector(`.content-item[data-id="${id}"]`);
+            if (editingItem) {
+                editingItem.style.display = 'none';
+            }
+
+            editForm.projectId.value = project._id;
+            editForm.title.value = project.title;
+            editForm.content.value = project.content;
+            editForm.role.value = project.role;
+            editForm.startDate.value = new Date(project.startDate).toISOString().split('T')[0];
+            editForm.endDate.value = project.endDate ? new Date(project.endDate).toISOString().split('T')[0] : '';
+
+            form.classList.add('show');
+            addButton.style.display = 'none';
+            submitButton.textContent = '수정';
+        }
+    };
+
+    window.deleteProject = async function(id) {
+        const response = await fetch(`/myPage/project/${id}`, {
+            method: 'DELETE',
+        });
+
+        if (response.ok) {
+            fetchProjectList();
+        }
+    };
+
+    fetchProjectList();
+});
+</script>

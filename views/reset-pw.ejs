@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HELLO FOLIO</title>
+    <link rel="stylesheet" href="/css/reset-pw.css">
+</head>
+<body>
+    <div class="container">
+        <h1 id="title">H E L L O&nbsp;&nbsp;F O L I O</h1>
+        <p id="produce">Show & Share your Portfolio</p>
+    
+        <h2 class="resetPasswordTitle">비밀번호 재설정</h2>
+      <div class="resetPasswordForm">
+        <form id="resetPasswordForm" action="/reset-password/<%= token %>" method="POST">
+          <div class="resetPasswordInput">
+            <!-- <label id="newPassword" for="password">새 비밀번호:</label> -->
+            <input type="password" id="password" name="password" placeholder=" new password" required>
+          </div>
+          <div class="resetConfirmPasswordInput">
+            <!-- <label id="confirmNewPassword" for="confirmPassword">비밀번호 확인:</label> -->
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder=" confirm new password" required>
+          </div> 
+            <button id="send-button" type="submit">비밀번호 재설정</button>
+        </form>
+
+    <script>
+        const token = '<%= token %>';
+    </script>
+    <script src="/js/auth/reset-pw.js"></script>
+</body>
+</html>

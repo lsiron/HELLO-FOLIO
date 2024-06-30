@@ -1,0 +1,126 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+/* 컨테이너 스타일링 */
+.container {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center; 
+}
+
+/* 텍스트 스타일링 */
+#title {
+    font-size: 120px;
+    text-align: center; 
+    padding-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+#produce {
+    font-size: 40px; 
+    font-weight: bold;
+    color: gray;
+    padding-bottom: 150px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.login-title {
+    font-size: 50px;
+    padding-bottom: 20px;
+    text-align: center;
+}
+
+/* 폼 스타일링 */
+.login-form {
+    text-align: center; 
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.input-group input {
+    width: 500px;
+    height: 70px;
+    border-radius: 10px;
+    font-size: 24px;
+    margin-bottom: 10px;
+    padding: 0 10px;
+}
+
+.error-message {
+    color: red;
+    font-size: 16px; 
+    margin-top: 0px; 
+    margin-bottom: 10px; 
+}
+
+.login-button,
+.signup-button {
+    height: 70px;
+    width: 520px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    display: block;
+    font-size: 24px;
+}
+
+.login-button {
+    background-color: black;
+    color: white;
+}
+
+.login-button:hover {
+    cursor: pointer;
+}
+
+.signup-button {
+    background-color: rgb(255, 255, 255);
+}
+
+.signup-button:hover {
+    cursor: pointer;
+}
+
+#signup-message {
+    display: block;
+    font-size: 20px;
+    padding-bottom: 20px;
+    text-align: center; 
+}
+
+/* 애니메이션을 위한 CSS */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 1s ease, visibility 1s ease;
+}
+
+.overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.overlay h1 {
+    color: white;
+    font-size: 6em;
+}

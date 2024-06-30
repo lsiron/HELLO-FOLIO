@@ -1,0 +1,115 @@
+#title {
+    text-decoration: none;
+    color: black;
+    font-size: 55px;
+    font-family: 'Noto Sans KR', sans-serif; /* Noto Sans KR 폰트 적용 */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* 텍스트 그림자 추가 */
+}
+
+.site-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 33px 40px;
+    background-color: #f0f0f0;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-bottom: 5px solid #ccc;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.profile img {
+    width: 80px; 
+    height: 80px; 
+    border-radius: 50%;
+    object-fit: cover; /* 이미지 비율 유지하면서 크기 맞추기 */
+    cursor: pointer;
+}
+
+.profile-menu {
+    position: absolute;
+    top: 80px; /* 프로필 사진 아래에 위치하도록 조정 */
+    right: 0px; /* 오른쪽 여백 조정 */
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    display: none; /* 초기에는 숨김 상태 */
+    z-index: 1000; /* 다른 요소 위로 */
+}
+
+.profile-menu ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.profile-menu ul li {
+    padding: 15px 25px;
+    white-space: nowrap;
+}
+
+.profile-menu ul li a {
+    text-decoration: none;
+    text-align: center;
+    color: #606060;
+    font-size: 20px;
+    display: block;
+}
+
+.profile:hover .profile-menu {
+    display: block; /* 프로필 사진에 마우스 오버 시 메뉴 펼치기 */
+}
+
+/* 미디어 쿼리 */
+/* 태블릿 가로 화면용 스타일 (1024px ~ 1279px) */
+@media (min-width: 1024px) and (max-width: 1279px) {
+    .site-header {
+        padding: 20px 30px;
+    }
+
+    #title {
+        font-size: 45px;
+    }
+
+    .profile img {
+        width: 70px;
+        height: 70px;
+    }
+
+    .profile-menu {
+        top: 70px;
+    }
+
+    .profile-menu ul li {
+        padding: 10px 20px;
+        font-size: 18px;
+    }
+}
+
+/* 대형 데스크탑 화면용 스타일 (1920px 이상) */
+@media (min-width: 1920px) {
+    .site-header {
+        padding: 40px 50px;
+    }
+
+    #title {
+        font-size: 65px;
+    }
+
+    .profile img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .profile-menu {
+        top: 100px;
+    }
+
+    .profile-menu ul li {
+        padding: 20px 30px;
+        font-size: 24px;
+    }
+}
