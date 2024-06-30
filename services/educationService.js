@@ -1,61 +1,46 @@
-const Education = require('../db/model/educationModel');
+const EducationModel = require('../db/model/educationModel');
 const ServiceError = require('../errors/serviceError');
 
-
-// Education 데이터 추가 함수
-const addEducation = async (data) => {
-  try {
-    // 중복 확인 함수
-    const existingEducation = await Education.findOne({
-      userId: data.userId,
-      school: data.school,
-      major: data.major,
-      degree: data.degree,
-      startDate: data.startDate,
-      endDate: data.endDate
-    });
-    
-    if (existingEducation) {
-      throw new ServiceError('같은 이름의 학력이 등록되어 있습니다.', 409);
-    }
-
-    const education = new Education(data);
-    return await education.save();
-  } catch (err) {
-    throw new ServiceError('학력 추가 중 에러: ' + err.message, 500);
-  }
+const getEdu = async (userId) => {
+  return await EducationModel.find({ userId });
 };
 
-// 사용자 ID로 Education 목록 조회 함수
-const getEducationByUserId = async (userId) => {
-  try {
-    return await Education.find({ userId });
-  } catch (err) {
-    throw new ServiceError('학력 데이터 가져오는 중 오류 발생: ' + err.message, 500);
+const createEdu = async (userId, eduData) => {
+  const existingEdu = await EducationModel.findOne({
+    userId,
+    school: eduData.school,
+    major: eduData.major,
+    degree: eduData.degree,
+    startDate: eduData.startDate,
+    endDate: eduData.endDate
+  });
+
+  if (existingEdu) {
+    throw new ServiceError('같은 이름의 학력이 등록되어 있습니다.', 409);
   }
+
+  const edu = new EducationModel({ ...eduData, userId });
+  return await edu.save();
 };
 
-// Education 데이터 업데이트 함수
-const updateEducation = async (id, data) => {
-  try {
-    return await Education.findByIdAndUpdate(id, data, { new: true });
-  } catch (err) {
-    throw new ServiceError('학력데이터 업데이트 오류: ' + err.message, 500);
+const updateEdu = async (eduId, updateData) => {
+  const updatedEdu = await EducationModel.findByIdAndUpdate(eduId, updateData, { new: true });
+  if (!updatedEdu) {
+    throw new ServiceError('학력을 찾을 수 없습니다.', 404);
   }
+  return updatedEdu;
 };
 
-// Education 데이터 삭제 함수
-const deleteEducation = async (id) => {
-  try {
-    return await Education.findByIdAndDelete(id);
-  } catch (err) {
-    throw new ServiceError('학력데이터 삭제 오류: ' + err.message, 500);
+const deleteEdu = async (eduId) => {
+  const deletedEdu = await EducationModel.findByIdAndDelete(eduId);
+  if (!deletedEdu) {
+    throw new ServiceError('학력을 찾을 수 없습니다.', 404);
   }
 };
 
 module.exports = {
-  addEducation,
-  getEducationByUserId,
-  updateEducation,
-  deleteEducation
+  getEdu,
+  createEdu,
+  updateEdu,
+  deleteEdu,
 };

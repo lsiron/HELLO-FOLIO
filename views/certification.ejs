@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     cancelButton.addEventListener('click', () => {
-        form.style.display = 'none';
+        form.classList.remove('show');
         addButton.style.display = 'block';
         editForm.reset();
         document.querySelectorAll('.certification-item').forEach(item => {
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (response.ok) {
             editForm.reset();
-            form.style.display = 'none';
+            form.classList.remove('show');
             addButton.style.display = 'block';
             fetchCertificationList();
         }
@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function() {
             editForm.name.value = certification.name;
             editForm.getDate.value = new Date(certification.getDate).toISOString().split('T')[0];
 
-            form.style.display = 'block';
+            form.classList.add('show');
             addButton.style.display = 'none';
             submitButton.textContent = '수정';
         }

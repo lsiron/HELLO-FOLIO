@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.getElementById('login-form');
+    const loginButton = document.querySelector('.login-button');
+
     loginForm.addEventListener('submit', function(event) {
         event.preventDefault(); // 페이지 새로고침 방지
 
@@ -20,7 +22,10 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-         // 유효성 검사 성공 시 로그인
+        // 로그인 버튼 비활성화
+        loginButton.disabled = true;
+
+        // 유효성 검사 성공 시 로그인
         // 로그인 성공 시 애니메이션 실행
         const overlay = document.getElementById('animationOverlay');
         
