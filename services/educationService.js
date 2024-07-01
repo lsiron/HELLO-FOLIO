@@ -1,5 +1,6 @@
 const EducationModel = require('../db/model/educationModel');
 const ServiceError = require('../errors/serviceError');
+const ConflictError = require('../errors/conflictError');
 
 const getEdu = async (userId) => {
   return await EducationModel.find({ userId });
@@ -16,7 +17,7 @@ const createEdu = async (userId, eduData) => {
   });
 
   if (existingEdu) {
-    throw new ServiceError('같은 이름의 학력이 등록되어 있습니다.', 409);
+    throw new ConflictError('같은 이름의 학력이 등록되어 있습니다.', 409);
   }
 
   const edu = new EducationModel({ ...eduData, userId });

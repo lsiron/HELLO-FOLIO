@@ -3,16 +3,16 @@ const userCardService = require('../services/userCardService');
 const uploadImage = async (req, res, next) => {
   try {
     await userCardService.uploadImage(req);
-    res.redirect('/myPage');
+    res.redirect('/my-page');
   } catch (err) {
-    next(err);
+    res.redirect('/my-page');
   }
 };
 
 const deleteImage = async (req, res, next) => {
   try {
     await userCardService.deleteImage(req.user.email);
-    res.redirect('/myPage');
+    res.redirect('/my-page');
   } catch (err) {
     next(err);
   }

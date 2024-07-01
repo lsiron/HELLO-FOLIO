@@ -47,7 +47,7 @@
     </div>
     <div class="img-edit">
       <div class="img-select">
-      <form action="/myPage/upload" method="POST" enctype="multipart/form-data">
+      <form action="/my-page/upload" method="POST" enctype="multipart/form-data">
         <input type="file" name="profileImage">
       </div>
       <div class="img-up">
@@ -55,7 +55,7 @@
       </form>
       </div>
       <div class="img-up-del">
-      <form action="/myPage/delete?_method=DELETE" method="POST">
+      <form action="/my-page/delete?_method=DELETE" method="POST">
         <button class="delete">이미지 삭제</button> 
       </form>
     </div>
@@ -110,7 +110,7 @@
     </h2>
 
     <div class="user-exit">
-      <form action="/myPage/deactivate?_method=DELETE" method="POST" onsubmit="return confirmDeactivation()">
+      <form action="/my-page/deactivate?_method=DELETE" method="POST" onsubmit="return confirmDeactivation()">
         <button type="submit" class="deactivate">회원탈퇴</button>
       </form>
     </div>

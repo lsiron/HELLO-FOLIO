@@ -26,12 +26,12 @@ app.use('/', resetPwRouter);                            // resetPwRouter 작동
 
 // 인증이 필요한 라우터 (순서 중요함)
 app.use('/', authMiddleware, selectRouter);                   // selectRouter 작동
-app.use('/myPage', authMiddleware, myPageRouter);             // myPageRouter 작동
-app.use('/myPage', authMiddleware, educationRouter);          // educationRouter 작동
-app.use('/myPage', authMiddleware, certificationRouter);      // certificationRouter 작동
-app.use('/myPage', authMiddleware, awardRouter);              // awardRouter 작동
-app.use('/myPage', authMiddleware, projectRouter);            // projectRouter 작동
-app.use('/userPage', authMiddleware, userPageRouter);         // userPageRouter 작동
+app.use('/my-page', authMiddleware, myPageRouter);             // myPageRouter 작동
+app.use('/my-page', authMiddleware, educationRouter);          // educationRouter 작동
+app.use('/my-page', authMiddleware, certificationRouter);      // certificationRouter 작동
+app.use('/my-page', authMiddleware, awardRouter);              // awardRouter 작동
+app.use('/my-page', authMiddleware, projectRouter);            // projectRouter 작동
+app.use('/user-page', authMiddleware, userPageRouter);         // userPageRouter 작동
 
 // 에러 핸들링 미들웨어 => 핸들링 처리의 끝지점
 // renderPage추가 된 경우 해당 페이지 렌더링 => login화면의 alert활성화

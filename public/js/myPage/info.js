@@ -22,7 +22,7 @@ document.getElementById('edit-intro-btn').addEventListener('click', () => {
       if (content) {
         // 입력된 자기소개가 있는 경우 업데이트
         if (userIntroduction) {
-          response = await fetch(`/myPage/info/${userId}`, {
+          response = await fetch(`/my-page/info/${userId}`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
@@ -30,7 +30,7 @@ document.getElementById('edit-intro-btn').addEventListener('click', () => {
             body: JSON.stringify({ content }),
           });
         } else {
-          response = await fetch('/myPage/info', {
+          response = await fetch('/my-page/info', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

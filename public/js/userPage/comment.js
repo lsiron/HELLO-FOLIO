@@ -11,7 +11,7 @@ document.getElementById('commentForm').addEventListener('submit', async function
 
     
     try {
-        const response = await fetch('/userPage/comment', {
+        const response = await fetch('/user-page/comment', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ comment, password, parentId })
@@ -44,7 +44,7 @@ document.getElementById('commentForm').addEventListener('submit', async function
         const totalPages = result.totalPages;
 
         // 마지막 페이지로 리디렉션
-        window.location.href = `/userPage/${parentId}?page=${totalPages}`;
+        window.location.href = `/user-page/${parentId}?page=${totalPages}`;
     } catch (error) {
         alert(error.message);
     } finally {
@@ -89,7 +89,7 @@ function openEditModal(commentId) {
         const password = editPassword.value;
         
         try {
-            const response = await fetch(`/userPage/comment/${commentId}`, {
+            const response = await fetch(`/user-page/comment/${commentId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ comment: newComment, password })
@@ -145,7 +145,7 @@ function openDeleteModal(commentId) {
         const commentId = document.getElementById('delete-comment-id').value;
         
         try {
-            const response = await fetch(`/userPage/comment/${commentId}`, {
+            const response = await fetch(`/user-page/comment/${commentId}`, {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ password })

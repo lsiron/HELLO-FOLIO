@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
       if (confirm('이름을 변경하시겠습니까?')) {
         try {
-          const response = await fetch(`/myPage/name/${userId}`, {
+          const response = await fetch(`/my-page/name/${userId}`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
 
       try {
-        const response = await fetch(`/myPage/password/${userId}`, {
+        const response = await fetch(`/my-page/password/${userId}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',

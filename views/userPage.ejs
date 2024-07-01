@@ -56,7 +56,7 @@
 
 <div class="pagination">
   <% if (hasPrev) { %>
-    <a href="/userPage/<%= user._id %>?page=<%= currentPage - 1 %>">❮</a>
+    <a href="/user-page/<%= user._id %>?page=<%= currentPage - 1 %>">❮</a>
   <% } else { %>
     <span>❮</span>
   <% } %>
@@ -65,12 +65,12 @@
     <% if (i === currentPage) { %>
       <span><%= i %></span>
     <% } else { %>
-      <a href="/userPage/<%= user._id %>?page=<%= i %>"><%= i %></a>
+      <a href="/user-page/<%= user._id %>?page=<%= i %>"><%= i %></a>
     <% } %>
   <% } %>
 
   <% if (hasNext) { %>
-    <a href="/userPage/<%= user._id %>?page=<%= currentPage + 1 %>">❯</a>
+    <a href="/user-page/<%= user._id %>?page=<%= currentPage + 1 %>">❯</a>
   <% } else { %>
     <span>❯</span>
   <% } %>

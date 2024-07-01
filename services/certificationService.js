@@ -1,5 +1,6 @@
 const CertificationModel = require('../db/model/certificationModel');
 const ServiceError = require('../errors/serviceError');
+const ConflictError = require('../errors/conflictError');
 
 const getCert = async (userId) => {
   return await CertificationModel.find({ userId });
@@ -13,7 +14,7 @@ const createCert = async (userId, certData) => {
   });
 
   if (existingCert) {
-    throw new ServiceError('같은 이름의 자격증이 등록되어 있습니다', 409);
+    throw new ConflictError('같은 이름의 자격증이 등록되어 있습니다', 409);
   }
 
   const cert = new CertificationModel({ ...certData, userId });

@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const awardData = Object.fromEntries(formData.entries());
         const isEdit = awardData.awardId !== '';
 
-        const url = isEdit ? `/myPage/award/${awardData.awardId}` : '/myPage/award';
+        const url = isEdit ? `/my-page/award/${awardData.awardId}` : '/my-page/award';
         const method = isEdit ? 'PUT' : 'POST';
 
         const response = await fetch(url, {
@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     async function fetchAwardList() {
-        const response = await fetch(`/myPage/award`);
+        const response = await fetch(`/my-page/award`);
         if (response.ok) {
             const awardData = await response.json();
             const awards = Array.isArray(awardData) ? awardData : [awardData];
@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     window.deleteAward = async function(id) {
-        const response = await fetch(`/myPage/award/${id}`, {
+        const response = await fetch(`/my-page/award/${id}`, {
             method: 'DELETE',
         });
 

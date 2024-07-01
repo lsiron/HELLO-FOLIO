@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const certificationData = Object.fromEntries(formData.entries());
         const isEdit = certificationData.certificationId !== '';
 
-        const url = isEdit ? `/myPage/certification/${certificationData.certificationId}` : '/myPage/certification';
+        const url = isEdit ? `/my-page/certification/${certificationData.certificationId}` : '/my-page/certification';
         const method = isEdit ? 'PUT' : 'POST';
 
         const response = await fetch(url, {
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     async function fetchCertificationList() {
-        const response = await fetch(`/myPage/certification`);
+        const response = await fetch(`/my-page/certification`);
         if (response.ok) {
             const certificationData = await response.json();
             const certifications = Array.isArray(certificationData) ? certificationData : [certificationData];
@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     window.deleteCertification = async function(id) {
-        const response = await fetch(`/myPage/certification/${id}`, {
+        const response = await fetch(`/my-page/certification/${id}`, {
             method: 'DELETE',
         });
 

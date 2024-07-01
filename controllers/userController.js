@@ -34,7 +34,7 @@ const loginUser = (req, res, next) => {
       res.cookie('accessToken', accessToken, { httpOnly: true });
       res.cookie('refreshToken', refreshToken, { httpOnly: true });
 
-      res.redirect('/myPage');
+      res.redirect('/my-page');
     } catch (error) {
       next(error);
     }
@@ -46,8 +46,8 @@ const logoutUser = async (req, res, next) => {
     const { refreshToken } = req.cookies;
     await userService.logoutUser(refreshToken);
 
-    res.cookie('accessToken', '', { maxAge: 0, httpOnly: true });
-    res.cookie('refreshToken', '', { maxAge: 0, httpOnly: true });
+    res.clearCookie('accessToken', { httpOnly: true });
+    res.clearCookie('refreshToken', { httpOnly: true });
     res.redirect('/');
   } catch (error) {
     next(error);

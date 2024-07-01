@@ -1,5 +1,6 @@
 const ProjectModel = require('../db/model/projectModel');
 const ServiceError = require('../errors/serviceError');
+const ConflictError = require('../errors/conflictError');
 
 const getProject = async (userId) => {
     return await ProjectModel.find({ userId });
@@ -15,7 +16,7 @@ const createProject = async (userId, projectData) => {
   });
 
   if (existingProject) {
-    throw new ServiceError('같은 이름의 프로젝트가 등록되어 있습니다.', 409);
+    throw new ConflictError('같은 이름의 프로젝트가 등록되어 있습니다.', 409);
   }
 
   const project = new ProjectModel({ ...projectData, userId });

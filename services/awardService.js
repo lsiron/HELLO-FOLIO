@@ -1,5 +1,6 @@
 const AwardModel = require('../db/model/awardModel');
 const ServiceError = require('../errors/serviceError');
+const ConflictError = require('../errors/conflictError');
 
 const getAward = async (userId) => {
   return await AwardModel.find({ userId });
@@ -14,7 +15,7 @@ const createAward = async (userId, awardData) => {
   });
 
   if (existingAward) {
-    throw new ServiceError('같은 이름의 수상이 등록되어 있습니다.', 409);
+    throw new ConflictError('같은 이름의 수상이 등록되어 있습니다.', 409);
   }
 
   const award = new AwardModel({ ...awardData, userId });

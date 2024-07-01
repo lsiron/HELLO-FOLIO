@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const projectData = Object.fromEntries(formData.entries());
         const isEdit = projectData.projectId !== '';
 
-        const url = isEdit ? `/myPage/project/${projectData.projectId}` : '/myPage/project';
+        const url = isEdit ? `/my-page/project/${projectData.projectId}` : '/my-page/project';
         const method = isEdit ? 'PUT' : 'POST';
 
         const response = await fetch(url, {
@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     async function fetchProjectList() {
-        const response = await fetch(`/myPage/project`);
+        const response = await fetch(`/my-page/project`);
         if (response.ok) {
             const projectData = await response.json();
             const projects = Array.isArray(projectData) ? projectData : [projectData];
@@ -148,7 +148,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     window.deleteProject = async function(id) {
-        const response = await fetch(`/myPage/project/${id}`, {
+        const response = await fetch(`/my-page/project/${id}`, {
             method: 'DELETE',
         });
 

@@ -22,6 +22,10 @@ document.getElementById('forgotPasswordForm').addEventListener('submit', async f
 
         const result = await response.json();
         alert(result.message);
+
+        if (result.success) {
+            window.location.href = '/login';
+        }
     } catch (error) {
         alert('요청 중 오류가 발생했습니다. 다시 시도해주세요.');
         // 에러 발생 시 버튼 재활성화 및 원래 텍스트로 변경

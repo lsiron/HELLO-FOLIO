@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const educationData = Object.fromEntries(formData.entries());
         const isEdit = educationData.educationId !== '';
 
-        const url = isEdit ? `/myPage/education/${educationData.educationId}` : '/myPage/education';
+        const url = isEdit ? `/my-page/education/${educationData.educationId}` : '/my-page/education';
         const method = isEdit ? 'PUT' : 'POST';
 
         const response = await fetch(url, {
@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     async function fetchEducationList() {
-        const response = await fetch(`/myPage/education`);
+        const response = await fetch(`/my-page/education`);
         if (response.ok) {
             const educationData = await response.json();
             const educations = Array.isArray(educationData) ? educationData : [educationData];
@@ -154,7 +154,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     window.deleteEducation = async function(id) {
-        const response = await fetch(`/myPage/education/${id}`, {
+        const response = await fetch(`/my-page/education/${id}`, {
             method: 'DELETE',
         });
 
