@@ -40,7 +40,7 @@ const authenticateUser = async (email, password) => {
 };
 
 const generateTokens = async (user) => {
-  const payload = { email: user.email };
+  const payload = { _id: user._id };
 
   // Access Token 발급, 유효 기간 1시간
   const accessToken = jwt.sign(payload, process.env.SECRET, { expiresIn: '1h' });
@@ -48,7 +48,7 @@ const generateTokens = async (user) => {
   const refreshToken = jwt.sign(payload, process.env.REFRESH_SECRET, { expiresIn: '14d' });
 
   // Refresh Token을 DB에 저장
-  await UserModel.updateOne({ email: user.email }, { refreshToken });
+  await UserModel.updateOne({ _id: user._id }, { refreshToken });
 
   return { accessToken, refreshToken };
 };
@@ -56,7 +56,7 @@ const generateTokens = async (user) => {
 const logoutUser = async (refreshToken) => {
   if (refreshToken) {
     const decoded = jwt.verify(refreshToken, process.env.REFRESH_SECRET);
-    await UserModel.updateOne({ email: decoded.email }, { refreshToken: null });
+    await UserModel.updateOne({ _id: decoded._id }, { refreshToken: null });
   }
 };
 

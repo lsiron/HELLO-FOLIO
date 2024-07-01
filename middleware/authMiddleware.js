@@ -15,7 +15,7 @@ const authMiddleware = async (req, res, next) => {
     if (accessToken) {
       try {
         const accessPayload = jwt.verify(accessToken, process.env.SECRET);
-        const user = await UserModel.findOne({ email: accessPayload.email });
+        const user = await UserModel.findOne({ _id: accessPayload._id });
         if (!user) {
           return res.status(401).send('사용자를 찾을 수 없습니다');
         }
@@ -34,13 +34,13 @@ const authMiddleware = async (req, res, next) => {
     if (refreshToken) {
       try {
         const refreshPayload = jwt.verify(refreshToken, process.env.REFRESH_SECRET);
-        const user = await UserModel.findOne({ email: refreshPayload.email, refreshToken });
+        const user = await UserModel.findOne({ _id: refreshPayload._id, refreshToken });
         if (!user) {
           return res.status(403).send('사용자를 찾을 수 없습니다');
         }
 
         // 유효한 refreshToken이 있을 때, 엑세스 토큰을 쿠키에 재발급해줌
-        const newAccessToken = jwt.sign({ email: refreshPayload.email }, process.env.SECRET, { expiresIn: '1h' });
+        const newAccessToken = jwt.sign({ _id: refreshPayload._id }, process.env.SECRET, { expiresIn: '1h' });
         res.cookie('accessToken', newAccessToken, { httpOnly: true });
         req.user = user; // 사용자 정보를 요청 객체에 설정
         return next();

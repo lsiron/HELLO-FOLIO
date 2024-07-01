@@ -11,7 +11,7 @@ const opts = {
 
 const jwt = new JwtStrategy(opts, async (jwtPayload, done) => {
   try {
-    const user = await UserModel.findOne({ _id: jwtPayload.id });
+    const user = await UserModel.findOne({ _id: jwtPayload._id });
     if (user) {
       return done(null, user);
     }
